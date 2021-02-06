@@ -11,24 +11,26 @@
             <h1 class="display-4 text-white">Welcome to BillSplitter!</h1>
             <p class="lead mb-0 text-white">Please upload your receipt to get started.</p>
             <img class="mt-4 imgmobile" src="resources/images/receiptlogo.png">
-            <p class="lead mb-0 text-white">You can either take an image or your receipt, or upload one from your device.</p>
+            <p class="lead mb-0 text-white">You can either take an image or your receipt, or upload one from your
+                device.</p>
         </header>
         <div class="row py-2">
             <div class="col-lg-6 mx-auto">
                 <!-- Upload image input-->
-                <div class="input-group mb-3 px-2 py-2 rounded-pill shadow-md" style="background-color: rgb(65, 63, 63);">
+                <div class="input-group mb-3 px-2 py-2 rounded-pill shadow-md"
+                    style="background-color: rgb(65, 63, 63);">
                     <input id="upload" type="file" onchange="readURL(this);" class="form-control">
-                    <label id="upload-label" for="upload" class="upload-label text-white">Select/take receipt image</label>
+                    <label id="upload-label" for="upload" class="upload-label text-white">Select/take receipt
+                        image</label>
                     <div class="input-group-append">
-                        <label for="upload" class="btn btn-light m-0 rounded-pill px-4">
+                        <label for="upload" class="btn btn-light m-0 rounded-pill d-flex align-items-center justify-content-center">
                             <small class="text-uppercase font-weight-bold text-muted">Choose file</small>
                         </label>
                     </div>
                 </div>
 
                 <!-- Uploaded image area-->
-                <div class="imagezone"><img id="imageResult"
-                        class="img-fluid rounded shadow-sm mx-auto d-block">
+                <div class="imagezone"><img id="imageResult" class="img-fluid rounded shadow-sm mx-auto d-block">
                 </div>
             </div>
         </div>
