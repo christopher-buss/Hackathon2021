@@ -1,0 +1,101 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    overscroll-behavior: none;
+    background-color: #1e1e1e;
+    color: whitesmoke;
+    display: flex;
+}
+
+.billing-box {
+    border: 1px solid red;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+}
+
+.billing-heading {
+    height: 20%;
+    border: 1px solid purple;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#billItems {
+    height: 100%;
+    border: 1px solid coral;
+    padding: 20px
+}
+
+#billSum {
+    height: 20%;
+    border: 1px solid darkturquoise;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-box {
+    height: 70px;
+    margin: 5px;
+    border: 1px solid rgb(7, 209, 0);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 5px 40px;
+}
+
+.dragging {
+    background-color: gray;
+}
+
+.itemName-box {
+    width: 100%;
+    text-align: left;
+}
+
+.itemCalc-box {
+    width: 100%;
+    text-align: center;
+}
+
+.itemTotal-box {
+    width: 100%;
+    text-align: right;
+}
+
+.party-box {
+    border: 1px solid blue;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.selection {
+    border: 1px solid lime;
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#party-members {
+    border: 1px solid cyan;
+    height: 100%;
+    padding: 5%;
+}
+
+.member-box {
+    height: 300px;
+    border: 1px solid pink;
+    margin: 10px;
+    margin-bottom: 20px;
+}
+
+.scrollable {
+    overflow-y: auto;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../resources/billsplit.css">
+    <title>Document</title>
+</head>
+<body>
+   
+    <div class="billing-box">
+        <div class="billing-heading">
+            BILL ITEMS
+        </div>
+        <div id="billItems">
+
+        </div>
+        <div id="billSum">
+
+        </div>
+    </div>
+    <div class="party-box">
+        <div class="selection">
+            <label for="party-members-amount" style="font-size: 20px;">Select the number of party members: &nbsp; </label>
+            <select onchange="handleSelectChange()" name="members" id="party-members-amount">
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+            </select>
+        </div>
+        <div id="party-members" class="scrollable">
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="../script/billsplit.js"></script>
+</body>
+</html>
