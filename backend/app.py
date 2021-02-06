@@ -1,9 +1,16 @@
-from flask import Flask, request, jsonify
-import json
+import logging
+import os
+
 import boto3
 import connection
+from botocore.exceptions import ClientError
+from flask import Flask, request, jsonify, flash, redirect, url_for
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = './uploads'
+ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/')
@@ -20,12 +27,36 @@ def save_split(receipt, userList):
     return jsonify("content")
 
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @app.route('/save_receipt', methods=['POST'])
+def upload_file():
+    """https://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/"""
+    if request.method == 'POST':
+        # check if the post request has the file part
+        print(request.files)
+        if 'photo' not in request.files:
+            print('No photo')
+            return redirect(request.url)
+        file = request.files['photo']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            print('No selected photo')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            # filename = secure_filename()
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+            print("Uploaded file")
+            return 'Success'
+    return redirect(request.url)
+
+
 def save_receipt():
-    bucket = 'arn:aws:s3:eu-west-2:082286152231:accesspoint/hackaway'
-    print(request.form)
-    photo = request.form['photo']
-    detect_text(bucket, photo)
+    pass
 
 
 def detect_text(bucket, photo) -> int:

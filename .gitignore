@@ -260,3 +260,4 @@ backend/.idea/
 .idea/
 
 *.zip
+backend/uploads/
