@@ -6,18 +6,21 @@ from database_interaction import add_receipt, retrieve_receipt
 from botocore.exceptions import ClientError
 from flask import Flask, request, redirect, jsonify
 
+from connection import ItemJSONEncoder
+
 app = Flask(__name__)
 
 UPLOAD_FOLDER = './uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.json_encoder = ItemJSONEncoder
 
 
 @app.route('/save', methods=['POST'])
 def save_instance():
     """Save an instance of the site with the data pre-loaded from a receipt"""
     receipt = request.json["receipt"]
-    #splits = request.json["splits"]
+    # splits = request.json["splits"]
     receipt_id = add_receipt(receipt["name"], receipt["items"], receipt["total"])
     return {"id": receipt_id}, 200
 
@@ -26,8 +29,8 @@ def save_instance():
 def return_instance(receipt_id):
     """Return to a saved instance of the site from the database"""
     receipt = retrieve_receipt(receipt_id=receipt_id)
+    print(type(receipt))
     return jsonify(receipt)
-
 
 
 def allowed_file(filename):
