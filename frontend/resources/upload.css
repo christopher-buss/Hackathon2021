@@ -2,7 +2,7 @@
     opacity: 0;
 }
 
-#upload-label {
+.upload-label {
     position: absolute;
     top: 50%;
     left: 1rem;
@@ -31,3 +31,9 @@
     z-index: 2;
     position: relative;
 }
+
+@media (max-width: 767px) {
+    .imgmobile {
+      width: 100%
+    }
+  }

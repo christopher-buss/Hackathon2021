@@ -1,24 +1,29 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="resources/upload.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container py-5">
+    <div class="container py-3">
         <header class="text-center">
             <h1 class="display-4">Welcome to BillSplitter!</h1>
-            <p class="lead mb-0">Please upload your receipt below to get started.</p>
-            <img src="resources/images/receiptlogo.png" class="mt-4">
+            <p class="lead mb-0">Please upload your receipt to get started.</p>
+            <img class="mt-4 imgmobile" src="resources/images/receiptlogo.png">
+            <p class="lead mb-0">You can either take an image or your receipt, or upload one from your device.</p>
         </header>
-        <div class="row py-4">
+        <div class="row py-2">
             <div class="col-lg-6 mx-auto">
                 <!-- Upload image input-->
                 <div class="input-group mb-3 px-2 py-2 rounded-pill shadow-md" style="background-color: grey;">
-                    <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0">
-                    <label id="upload-label" for="upload" class="text-white">Choose file</label>
+                    <input id="upload" type="file" onchange="readURL(this);" class="form-control">
+                    <label id="upload-label" for="upload" class="upload-label text-white">Select/take receipt
+                        image</label>
                     <div class="input-group-append">
-                        <label for="upload" class="btn btn-light m-0 rounded-pill px-4"><small
-                                class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
+                        <label for="upload" class="btn btn-light m-0 rounded-pill px-4">
+                            <small class="text-uppercase font-weight-bold text-muted">Choose file</small>
+                        </label>
                     </div>
                 </div>
 
@@ -28,7 +33,7 @@
                 </div>
             </div>
         </div>
-        <div class="text-center"> <button type="button" class="btn btn-lg btn-secondary">Upload</button>
+        <div class="text-center py-2"> <button type="button" class="btn btn-lg btn-secondary">Upload</button>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
