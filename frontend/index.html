@@ -1,0 +1,38 @@
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="resources/upload.css">
+</head>
+
+<body>
+    <div class="container py-5">
+        <header class="text-center">
+            <h1 class="display-4">Welcome to BillSplitter!</h1>
+            <p class="lead mb-0">Please upload your receipt below to get started.</p>
+            <img src="resources/images/receiptlogo.png" class="mt-4">
+        </header>
+        <div class="row py-4">
+            <div class="col-lg-6 mx-auto">
+                <!-- Upload image input-->
+                <div class="input-group mb-3 px-2 py-2 rounded-pill shadow-md" style="background-color: grey;">
+                    <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0">
+                    <label id="upload-label" for="upload" class="text-white">Choose file</label>
+                    <div class="input-group-append">
+                        <label for="upload" class="btn btn-light m-0 rounded-pill px-4"><small
+                                class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
+                    </div>
+                </div>
+
+                <!-- Uploaded image area-->
+                <div class="image-area"><img id="imageResult" src="#" alt=""
+                        class="img-fluid rounded shadow-sm mx-auto d-block">
+                </div>
+            </div>
+        </div>
+        <div class="text-center"> <button type="button" class="btn btn-lg btn-secondary">Upload</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="script/upload.js"></script>
+</body>
