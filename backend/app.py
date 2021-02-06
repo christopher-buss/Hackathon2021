@@ -2,7 +2,7 @@ import logging
 import os
 
 import boto3
-import connection
+from database_interaction import add_receipt, retrieve_receipt
 from botocore.exceptions import ClientError
 from flask import Flask, request, jsonify, flash, redirect, url_for
 
@@ -19,12 +19,12 @@ def hello_world():
 
 
 @app.route('/save', methods=['POST'])
-def save_split(receipt, userList):
+def save_instance(receipt, userList):
     """Save an instance of the site with the data pre-loaded from a receipt"""
-    connection.connect()
-    content = request.json
-    print(content['mytext'])
-    return jsonify("content")
+    receipt = request.json["receipt"]
+    splits = request.json["splits"]
+    receipt_id = add_receipt(receipt["name"], splits, receipt["total"])
+    return receipt_id
 
 
 def allowed_file(filename):

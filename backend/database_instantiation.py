@@ -7,9 +7,7 @@ connection.connect()
 class Receipts(Model):
     id = columns.UUID(primary_key=True)
     name = columns.Text()
+    items = columns.List()
     total = columns.Double()
+    splits = columns.List()
 
-
-class Splits(Model):
-    id = columns.UUID(primary_key=True)
-    total = columns.Double()
