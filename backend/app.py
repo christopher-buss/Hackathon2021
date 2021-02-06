@@ -2,9 +2,9 @@ import logging
 import os
 
 import boto3
-from database_interaction import add_receipt, retrieve_receipt
+from database_interaction import add_receipt
 from botocore.exceptions import ClientError
-from flask import Flask, request, jsonify, redirect
+from flask import Flask, request, redirect
 
 app = Flask(__name__)
 
@@ -14,7 +14,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/save', methods=['POST'])
-def save_instance(receipt, userList):
+def save_instance():
     """Save an instance of the site with the data pre-loaded from a receipt"""
     receipt = request.json["receipt"]
     splits = request.json["splits"]
