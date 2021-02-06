@@ -2,6 +2,7 @@ import logging
 import os
 
 import boto3
+import connection
 from botocore.exceptions import ClientError
 from flask import Flask, request, jsonify, flash, redirect, url_for
 
@@ -20,6 +21,7 @@ def hello_world():
 @app.route('/save', methods=['POST'])
 def save_split(receipt, userList):
     """Save an instance of the site with the data pre-loaded from a receipt"""
+    connection.connect()
     content = request.json
     print(content['mytext'])
     return jsonify("content")
