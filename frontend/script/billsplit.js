@@ -1,8 +1,4 @@
 //#region datainput
-/**
- * @type {Array.<{name: string, amount: number, price: number}>}
- */
-
 const bill = [
     { name: "Pepsi", amount: 1, price: 1.90 },
     { name: "Hamburger", amount: 2, price: 7.90 },
@@ -32,7 +28,7 @@ class BillItem {
     getHTML(id, draggable = false) {
         const itemBox = document.createElement("div")
         {
-            itemBox.setAttribute("class", "itembox")
+            itemBox.classList.add("itembox")
             itemBox.classList.add("half-round-box")
             itemBox.classList.add("reversed-half-round-box")
             
@@ -55,12 +51,12 @@ class BillItem {
 
             const itemCalcBox = document.createElement("div")
             itemCalcBox.setAttribute("class", "itemCalc-box")
-            itemCalcBox.innerHTML = `${this.amount} x £ ${(this.price).toFixed(2)}`
+            itemCalcBox.innerHTML = `${this.amount} x £${(this.price).toFixed(2)}`
             itemBox.appendChild(itemCalcBox)
 
             const itemTotalBox = document.createElement("div")
             itemTotalBox.setAttribute("class", "itemTotal-box")
-            itemTotalBox.innerHTML = `${(this.amount * this.price).toFixed(2)} £`
+            itemTotalBox.innerHTML = `£${(this.amount * this.price).toFixed(2)}`
             itemBox.appendChild(itemTotalBox)
         }
 
@@ -69,11 +65,6 @@ class BillItem {
 }
 //#endregion
 
-//#region dataobject creation
-/**
- * Creating an object that holds our items on a static index to make modifying easier
- * @type {Object.<string, BillItem>}
- */
 const serializedBill = {}
 {
     for (let i = 0; i < bill.length; i++) {
@@ -83,24 +74,18 @@ const serializedBill = {}
 }
 Object.freeze(serializedBill)
 
-/** @type {Object.<string, BillItem>}*/
 const openBill = {}
 Object.keys(serializedBill).forEach(itemId => {
     openBill[itemId] = serializedBill[itemId].getCopy()
 })
 
-/**
- * @type {Object.<string, {init: boolean, needsUpdate: boolean, list: Object.<string, BillItem>}>}
- */
 const memberBills = {}
 //#endregion
 
 //#region javascript logic
-
 function updateBillingLists() {
     {
         const parentNode = document.getElementById("items")
-        //clears all old html inside it
         parentNode.innerHTML = ""
 
         Object.keys(openBill).forEach(itemId => {
@@ -180,7 +165,7 @@ function updateBillingLists() {
                 })
                 const billingBoxTotal = document.createElement("div")
                 billingBoxTotal.classList.add("right")
-                billingBoxTotal.innerHTML = "£ " + totalPrice.toFixed(2)
+                billingBoxTotal.innerHTML = "£" + totalPrice.toFixed(2)
                 billingBox.appendChild(billingBoxTotal)
             }
 
@@ -205,7 +190,7 @@ function updateBillingLists() {
             })
             const billingBoxTotal = document.createElement("div")
             billingBoxTotal.classList.add("right")
-            billingBoxTotal.innerHTML = "£ " + totalPrice.toFixed(2)
+            billingBoxTotal.innerHTML = "£" + totalPrice.toFixed(2)
             billingBox.appendChild(billingBoxTotal)
         }
 
@@ -214,7 +199,7 @@ function updateBillingLists() {
 
 }
 
-let supportedNames = ["dog", "cat", "bird", "fish", "monkey", "eagle", "turtle", "duck"]
+let supportedNames = ["Dog", "Cat", "Bird", "Fish", "Monkey", "Eagle", "Turtle", "Duck"]
 
 function getRandomAnimal() {
     const animal = supportedNames.pop()
@@ -250,19 +235,13 @@ function handleSelectChange() {
 }
 
 handleSelectChange()
-
 //#endregion
 
 //#region dragevents
-
 let draggedId = ""
 let entered = undefined
 let dragging = false
 
-/**
- * 
- * @param {DragEvent} event 
- */
 function onDragStart(event) {
 
     dragging = true
@@ -276,10 +255,6 @@ function onDragStart(event) {
     console.log("start", draggedId)
 }
 
-/**
- * 
- * @param {DragEvent} event 
- */
 function onDragEnd(event) {
     dragging = false
     const element = document.getElementById(event.currentTarget.id)
@@ -290,10 +265,6 @@ function onDragEnd(event) {
     event.preventDefault()
 }
 
-/**
- * 
- * @param {DragEvent} event 
- */
 function onDrop(event) {
     if (dragging) {
         const itemId = draggedId.replace("op-", "")
@@ -327,10 +298,6 @@ function onDrop(event) {
     }
 }
 
-/**
- * 
- * @param {MouseEvent} event 
- */
 function onMouseUp(event) {
     console.log(event.currentTarget.id)
     const [_, memberId, itemId] = event.currentTarget.id.split("-")
