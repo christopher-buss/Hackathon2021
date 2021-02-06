@@ -28,6 +28,7 @@ def save_split(receipt, userList):
 
 
 def allowed_file(filename):
+    """Check if the file is allowed"""
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -51,12 +52,25 @@ def upload_file():
             # filename = secure_filename()
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
             print("Uploaded file")
+            save_receipt(UPLOAD_FOLDER + '/' + file.filename, file.filename)
             return 'Success'
     return redirect(request.url)
 
 
-def save_receipt():
-    pass
+def save_receipt(path, file_name):
+    """Saves the receipt to amazon s3 bucket"""
+    print("Uploading image...")
+    s3 = boto3.client('s3')
+    try:
+        s3.upload_file(path, "hackaway-v4", file_name,
+                       ExtraArgs={'ContentType': 'image/png'})
+    except ClientError as e:
+        logging.error(e)
+        print("---__---")
+        return False
+    print("Remove file:", path)
+    os.remove(path)
+    return True
 
 
 def detect_text(bucket, photo) -> int:
