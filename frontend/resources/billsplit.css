@@ -136,6 +136,14 @@ html, body {
     padding: 5px 40px;
 }
 
+.summarybox input {
+    padding: 5px;
+    padding-left: 15px;
+    border: none;
+    background: none;
+    color: whitesmoke
+}
+
 .openbill {
     background-color: rgb(112, 18, 2);
 }
@@ -174,3 +182,5 @@ html, body {
 .scrolling {
     overflow-y: auto;
 }
+
+

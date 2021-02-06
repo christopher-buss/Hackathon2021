@@ -152,9 +152,11 @@ function updateBillingLists() {
             billingBox.classList.add("summarybox")
 
             {
-                const billingBoxName = document.createElement("div")
-                billingBoxName.classList.add("left")
-                billingBoxName.innerHTML = memberId
+                const billingBoxName = document.createElement("input")
+                billingBoxName.classList.add("half-round-box")
+                billingBoxName.id = `input-${memberId}`
+                billingBoxName.addEventListener("keydown", onKeydown)
+                billingBoxName.value = memberId
                 billingBox.appendChild(billingBoxName)
             }
 
@@ -317,3 +319,22 @@ function onMouseUp(event) {
     updateBillingLists()
 }
 //#endregion
+
+function onKeydown(event) {
+    if (event.key === "Enter") {
+        const inputNode = document.getElementById(event.currentTarget.id)
+        const changedName = inputNode.value
+
+        const previousName = inputNode.id.replace("input-", "")
+
+        document.getElementById(`mb-${previousName}`).remove()
+
+        memberBills[changedName] = memberBills[previousName]
+        memberBills[changedName].init = false
+        
+
+        delete memberBills[previousName]
+
+        updateBillingLists()
+    }
+}
