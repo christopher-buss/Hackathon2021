@@ -2,9 +2,9 @@ import logging
 import os
 
 import boto3
-from database_interaction import add_receipt
+from database_interaction import add_receipt, retrieve_receipt
 from botocore.exceptions import ClientError
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, jsonify
 
 app = Flask(__name__)
 
