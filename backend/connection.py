@@ -4,15 +4,26 @@ from flask.json import JSONEncoder
 
 
 class Item(object):
-    def __init__(self, name, price):
+    def __init__(self, name, price, quantity):
         self.name = name
         self.price = price
+        self.quantity = quantity
+
+
+class Split(object):
+    def __init__(self, name, total, items):
+        self.name = name
+        self.total = total
+        self.items = items
+
 
 
 class ItemJSONEncoder(JSONEncoder):
     def default(self, obj):
         if type(obj) == Item:
-            return {'name': obj.name, 'price': obj.price}
+            return {'name': obj.name, 'price': obj.price, 'quantity': obj.price}
+        if type(obj) == Split:
+            return {'name': obj.name, 'total': obj.total, 'items': obj.items}
 
 
 def connect():
@@ -22,6 +33,7 @@ def connect():
     auth_provider = PlainTextAuthProvider('hackaway', 'password123')
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
     cluster.register_user_type('hackaway', 'item', Item)
+    cluster.register_user_type('hackaway', 'split', Split)
     session = cluster.connect(keyspace="hackaway")
 
     row = session.execute("select release_version from system.local").one()

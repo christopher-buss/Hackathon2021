@@ -20,9 +20,9 @@ app.json_encoder = ItemJSONEncoder
 def save_instance():
     """Save an instance of the site with the data pre-loaded from a receipt"""
     receipt = request.json["receipt"]
-    # splits = request.json["splits"]
-    receipt_id = add_receipt(receipt["name"], receipt["items"], receipt["total"])
-    return {"id": receipt_id}, 200
+    splits = request.json["splits"]
+    receipt_id = add_receipt(receipt["name"], receipt["items"], receipt["total"], splits)
+    return str(receipt_id)
 
 
 @app.route('/return/<receipt_id>', methods=['GET'])
