@@ -4,18 +4,13 @@ import os
 import boto3
 from database_interaction import add_receipt, retrieve_receipt
 from botocore.exceptions import ClientError
-from flask import Flask, request, jsonify, flash, redirect, url_for
+from flask import Flask, request, jsonify, redirect
 
 app = Flask(__name__)
 
 UPLOAD_FOLDER = './uploads'
 ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
 
 
 @app.route('/save', methods=['POST'])
@@ -28,6 +23,7 @@ def save_instance(receipt, userList):
 
 
 def allowed_file(filename):
+    """Check if the file is allowed"""
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -50,13 +46,26 @@ def upload_file():
         if file and allowed_file(file.filename):
             # filename = secure_filename()
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+            save_receipt(UPLOAD_FOLDER + '/' + file.filename, file.filename)
             print("Uploaded file")
             return 'Success'
     return redirect(request.url)
 
 
-def save_receipt():
-    pass
+def save_receipt(path, file_name):
+    """Saves the receipt to amazon s3 bucket"""
+    print("Uploading image...")
+    s3 = boto3.client('s3')
+    try:
+        s3.upload_file(path, "hackaway-v4", file_name,
+                       ExtraArgs={'ContentType': 'image/png'})
+    except ClientError as e:
+        logging.error(e)
+        print("---__---")
+        return False
+    print("Remove file:", path)
+    os.remove(path)
+    return True
 
 
 def detect_text(bucket, photo) -> int:
