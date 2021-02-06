@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, request, jsonify
+import json
 import boto3
 
 app = Flask(__name__)
@@ -7,6 +8,14 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     return 'Hello World!'
+
+@app.route('/save', methods=['POST'])
+def save_split(receipt, userList):
+    """Save an instance of the site with the data pre-loaded from a receipt"""
+    content = request.json
+    print (content['mytext'])
+    return jsonify("content")
+
 
 
 def save_receipt(photo):
@@ -30,6 +39,7 @@ def detect_text(bucket, photo) -> int:
         print('Type:' + text['Type'])
         print()
     return len(text_detections)
+
 
 
 if __name__ == '__main__':
