@@ -29,7 +29,7 @@ def allowed_file(filename):
 
 
 @app.route('/save_receipt', methods=['POST'])
-def upload_file():
+def client_upload_file():
     """https://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/"""
     if request.method == 'POST':
         # check if the post request has the file part
@@ -46,13 +46,14 @@ def upload_file():
         if file and allowed_file(file.filename):
             # filename = secure_filename()
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-            save_receipt(UPLOAD_FOLDER + '/' + file.filename, file.filename)
+            save_receipt_to_amazon_s3(UPLOAD_FOLDER + '/' + file.filename, file.filename)
+            detect_text(file.filename)
             print("Uploaded file")
             return 'Success'
     return redirect(request.url)
 
 
-def save_receipt(path, file_name):
+def save_receipt_to_amazon_s3(path, file_name):
     """Saves the receipt to amazon s3 bucket"""
     print("Uploading image...")
     s3 = boto3.client('s3')
@@ -68,21 +69,14 @@ def save_receipt(path, file_name):
     return True
 
 
-def detect_text(bucket, photo) -> int:
+def detect_text(photo) -> int:
     """https://docs.aws.amazon.com/rekognition/latest/dg/text-detecting-text-procedure.html"""
-    client = boto3.client('rekognition')
-    response = client.detect_text(Image={'S3Object': {'Bucket': bucket, 'Name': photo}})
+    client = boto3.client('rekognition', region_name='eu-west-2')
+    response = client.detect_text(Image={'S3Object': {'Bucket': 'hackaway-v4', 'Name': photo}},
+                                  Filters={'WordFilter': {'MinConfidence': 0.9}})
 
     text_detections = response['TextDetections']
-    print('Detected text\n----------')
-    for text in text_detections:
-        print('Detected text:' + text['DetectedText'])
-        print('Confidence: ' + "{:.2f}".format(text['Confidence']) + "%")
-        print('Id: {}'.format(text['Id']))
-        if 'ParentId' in text:
-            print('Parent Id: {}'.format(text['ParentId']))
-        print('Type:' + text['Type'])
-        print()
+    print([det['DetectedText'] for det in text_detections])  # if det['Confidence'] > 90])
     return len(text_detections)
 
 
