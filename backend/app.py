@@ -4,7 +4,7 @@ import os
 import boto3
 import connection
 from botocore.exceptions import ClientError
-from flask import Flask, request, jsonify, flash, redirect, url_for
+from flask import Flask, request, jsonify, redirect
 
 app = Flask(__name__)
 
@@ -13,13 +13,8 @@ ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-
-
 @app.route('/save', methods=['POST'])
-def save_split(receipt, userList):
+def save_split():
     """Save an instance of the site with the data pre-loaded from a receipt"""
     connection.connect()
     content = request.json
@@ -51,8 +46,8 @@ def upload_file():
         if file and allowed_file(file.filename):
             # filename = secure_filename()
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-            print("Uploaded file")
             save_receipt(UPLOAD_FOLDER + '/' + file.filename, file.filename)
+            print("Uploaded file")
             return 'Success'
     return redirect(request.url)
 
