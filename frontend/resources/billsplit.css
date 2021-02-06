@@ -7,50 +7,153 @@ html, body {
     overscroll-behavior: none;
     background-color: #1e1e1e;
     color: whitesmoke;
-    display: flex;
+    font-family: 'Roboto', sans-serif;
 }
 
-.billing-box {
-    border: 1px solid red;
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-}
-
-.billing-heading {
-    height: 20%;
-    border: 1px solid purple;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#billItems {
+.container {
+    width: 100%;
     height: 100%;
-    border: 1px solid coral;
-    padding: 20px
+    display: flex;
+    flex-direction: column;
 }
 
-#billSum {
-    height: 20%;
-    border: 1px solid darkturquoise;
+.half-round-box {
+    box-shadow: 0 0 4px rgb(0, 0, 0);
+    background-color: #2e2e2e7a;
+    border-radius: 5px 25px;
+}
+
+.reversed-half-round-box {
+    border-radius: 25px 5px;
+}
+
+.upper {
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    margin: 10px;
+}
+
+.welcome {
+    padding: 20px;
+    max-width: 500px;
+}
+
+.description {
+    color: rgb(165, 165, 165)
+}
+
+.control {
+    display: flex;
+}
+
+.selection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.selection * {
+    margin: 20px;
+}
+
+.submit {
+    margin-left: 20px;
+    padding: 5px 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 128, 0, 0.5);
+    cursor: pointer;
 }
 
-.item-box {
-    height: 70px;
-    margin: 5px;
-    border: 1px solid rgb(7, 209, 0);
+.submit:hover {
+    background-color: rgba(0, 128, 0, 0.75);
+}
+
+.lower {
+    height: 90%;
+    display: flex;
+}
+
+.billing {
+    padding: 10px;
+    width: 35%;
+    margin: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
+}
+
+.billing > .half-round-box {
+    padding: 10px;
+}
+
+.billingheading {
+    padding: 5px;
+    margin: 15px 10px;
+    text-align: center;
+}
+
+#items {
+    padding: 10px;
+}
+
+.itembox {
+    height: 40px;
+    margin: 10px 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     padding: 5px 40px;
 }
 
+.itembox:hover {
+    box-shadow: 0 0 5px rgba(0, 255, 179, 0.322);
+}
+
+.itemboxselected:hover {
+    box-shadow: 0 0 5px red;
+}
+
 .dragging {
-    background-color: gray;
+    background-color: #5858587a;
+}
+
+#summary {
+    padding: 10px;
+}
+
+.summarybox {
+    height: 40px;
+    margin: 10px 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 40px;
+}
+
+.openbill {
+    background-color: rgb(112, 18, 2);
+}
+
+.shares {
+    padding: 10px;
+    width: 65%;
+    margin: 10px;
+}
+
+.sharesbox {
+    min-height: 200px;
+    margin: 10px;
+    padding: 5px
+}
+
+.sharesboxtitle {
+    padding: 5px 20px
 }
 
 .itemName-box {
@@ -68,34 +171,6 @@ html, body {
     text-align: right;
 }
 
-.party-box {
-    border: 1px solid blue;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.selection {
-    border: 1px solid lime;
-    height: 20%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#party-members {
-    border: 1px solid cyan;
-    height: 100%;
-    padding: 5%;
-}
-
-.member-box {
-    height: 300px;
-    border: 1px solid pink;
-    margin: 10px;
-    margin-bottom: 20px;
-}
-
-.scrollable {
+.scrolling {
     overflow-y: auto;
 }
