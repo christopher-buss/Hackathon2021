@@ -8,10 +8,13 @@ def connect():
     }
     auth_provider = PlainTextAuthProvider('hackaway', 'password123')
     cluster = Cluster(cloud=cloud_config, auth_provider=auth_provider)
-    session = cluster.connect()
+    session = cluster.connect(keyspace="hackaway")
+
 
     row = session.execute("select release_version from system.local").one()
     if row:
         print(row[0])
     else:
         print("An error occurred.")
+
+    return session

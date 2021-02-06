@@ -14,12 +14,20 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 @app.route('/save', methods=['POST'])
-def save_instance(receipt, userList):
+def save_instance():
     """Save an instance of the site with the data pre-loaded from a receipt"""
     receipt = request.json["receipt"]
-    splits = request.json["splits"]
-    receipt_id = add_receipt(receipt["name"], splits, receipt["total"])
-    return receipt_id
+    #splits = request.json["splits"]
+    receipt_id = add_receipt(receipt["name"], receipt["items"], receipt["total"])
+    return {"id": receipt_id}, 200
+
+
+@app.route('/return/<receipt_id>', methods=['GET'])
+def return_instance(receipt_id):
+    """Return to a saved instance of the site from the database"""
+    receipt = retrieve_receipt(receipt_id=receipt_id)
+    return jsonify(receipt)
+
 
 
 def allowed_file(filename):
