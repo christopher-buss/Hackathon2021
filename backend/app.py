@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import json
 import boto3
+import connection
 
 app = Flask(__name__)
 
@@ -13,6 +14,7 @@ def hello_world():
 @app.route('/save', methods=['POST'])
 def save_split(receipt, userList):
     """Save an instance of the site with the data pre-loaded from a receipt"""
+    connection.connect()
     content = request.json
     print(content['mytext'])
     return jsonify("content")
