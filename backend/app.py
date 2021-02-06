@@ -9,22 +9,25 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World!'
 
+
 @app.route('/save', methods=['POST'])
 def save_split(receipt, userList):
     """Save an instance of the site with the data pre-loaded from a receipt"""
     content = request.json
-    print (content['mytext'])
+    print(content['mytext'])
     return jsonify("content")
 
 
-
-def save_receipt(photo):
-    bucket = 'bucket'
+@app.route('/save_receipt', methods=['POST'])
+def save_receipt():
+    bucket = 'arn:aws:s3:eu-west-2:082286152231:accesspoint/hackaway'
+    print(request.form)
+    photo = request.form['photo']
     detect_text(bucket, photo)
-    pass
 
 
 def detect_text(bucket, photo) -> int:
+    """https://docs.aws.amazon.com/rekognition/latest/dg/text-detecting-text-procedure.html"""
     client = boto3.client('rekognition')
     response = client.detect_text(Image={'S3Object': {'Bucket': bucket, 'Name': photo}})
 
@@ -39,7 +42,6 @@ def detect_text(bucket, photo) -> int:
         print('Type:' + text['Type'])
         print()
     return len(text_detections)
-
 
 
 if __name__ == '__main__':
