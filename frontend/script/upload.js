@@ -22,13 +22,25 @@ function readURL(input) {
 var input = document.getElementById('upload');
 var infoArea = document.getElementById('upload-label');
 
+const formData = new FormData();
+
 input.addEventListener('change', showFileName);
 function showFileName(event) {
     var input = event.srcElement;
-    var fileName = input.files[0].name;
-    infoArea.textContent = 'File name: ' + fileName;
+    let file = input.files[0];
+    formData.append('photo', file)
+    infoArea.textContent = 'File name: ' + file.name;
 }
 
-function takeImage() {
-    alert ("Hello world!");
-  }
+function send() {
+    const upload = async() => {
+        const response = await fetch("http://localhost:5000/save_receipt", {
+            method: 'POST',
+            body: formData,
+        })
+    const data = await response;
+
+    console.log(data)
+    }
+    upload()
+}

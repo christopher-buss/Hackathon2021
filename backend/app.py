@@ -5,6 +5,7 @@ import boto3
 from database_interaction import add_receipt, retrieve_receipt
 from botocore.exceptions import ClientError
 from flask import Flask, request, redirect, jsonify
+from flask_cors import CORS, cross_origin
 
 from connection import ItemJSONEncoder
 
@@ -15,8 +16,11 @@ ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.json_encoder = ItemJSONEncoder
 
+CORS(app)
+
 
 @app.route('/save', methods=['POST'])
+@cross_origin()
 def save_instance():
     """Save an instance of the site with the data pre-loaded from a receipt"""
     receipt = request.json["receipt"]
@@ -26,6 +30,7 @@ def save_instance():
 
 
 @app.route('/return/<receipt_id>', methods=['GET'])
+@cross_origin()
 def return_instance(receipt_id):
     """Return to a saved instance of the site from the database"""
     receipt = retrieve_receipt(receipt_id=receipt_id)
@@ -39,7 +44,8 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/save_receipt', methods=['POST'])
+@app.route('/save_receipt', methods=['GET', 'POST'])
+@cross_origin()
 def client_upload_file():
     """https://flask.palletsprojects.com/en/1.1.x/patterns/fileuploads/"""
     if request.method == 'POST':
@@ -47,7 +53,7 @@ def client_upload_file():
         print(request.files)
         if 'photo' not in request.files:
             print('No photo')
-            return redirect(request.url)
+            return "FAILED", 400
         file = request.files['photo']
         # if user does not select file, browser also
         # submit an empty part without filename
@@ -61,7 +67,7 @@ def client_upload_file():
             detect_text(file.filename)
             print("Uploaded file")
             return 'Success'
-    return redirect(request.url)
+    return "Failed", 400
 
 
 def save_receipt_to_amazon_s3(path, file_name):
