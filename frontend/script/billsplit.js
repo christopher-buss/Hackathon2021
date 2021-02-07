@@ -350,6 +350,10 @@ function roundTwo(number) {
 }
 
 function onSubmit() {
+
+    if (!window.confirm("Are you sure you want to submit? The page will be reset!"))
+        return
+
     let receiptTotal = 0
     for (const billItem of bill) {
         receiptTotal += billItem.price * billItem.quantity
@@ -383,4 +387,13 @@ function onSubmit() {
         splits: outputSplits
     }
     console.log(JSON.stringify(output, null, 4))
+    location.reload()
+    // fetch("localhost:5000/save", {method: "POST", body: JSON.stringify(output)}).then(result => {
+    //     if (result.status === 200) {
+    //         window.alert("Successfully submitted data")
+    //         location.reload()
+    //     } else {
+    //         window.alert(`Failed submitting data: ${result.status} | ${result.statusText}`)
+    //     }
+    // })
 }
