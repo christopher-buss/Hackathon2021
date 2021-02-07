@@ -54,37 +54,38 @@ class BillItem {
 
 //#region datainput
 const receiptName = "KFC"
-const bill = [{
-        name: "Pepsi",
-        quantity: 1,
-        price: 1.90
-    },
-    {
-        name: "Hamburger",
-        quantity: 2,
-        price: 7.90
-    },
-    {
-        name: "Fries",
-        quantity: 1,
-        price: 4.90
-    },
-    {
-        name: "Beer",
-        quantity: 3,
-        price: 2.90
-    },
-    {
-        name: "Apple",
-        quantity: 2,
-        price: 1.80
-    },
-    {
-        name: "Coke",
-        quantity: 1,
-        price: 8.90
-    },
-]
+const bill = localStorage.getItem('data')
+// const bill = [{
+//         name: "Pepsi",
+//         quantity: 1,
+//         price: 1.90
+//     },
+//     {
+//         name: "Hamburger",
+//         quantity: 2,
+//         price: 7.90
+//     },
+//     {
+//         name: "Fries",
+//         quantity: 1,
+//         price: 4.90
+//     },
+//     {
+//         name: "Beer",
+//         quantity: 3,
+//         price: 2.90
+//     },
+//     {
+//         name: "Apple",
+//         quantity: 2,
+//         price: 1.80
+//     },
+//     {
+//         name: "Coke",
+//         quantity: 1,
+//         price: 8.90
+//     },
+// ]
 //#endregion
 
 const serializedBill = {}
@@ -260,8 +261,6 @@ function handleSelectChange() {
     console.log(memberBills)
     updateBillingLists()
 }
-
-handleSelectChange()
 //#endregion
 
 //#region dragevents

@@ -3,7 +3,7 @@ import os
 
 import boto3
 
-from backend.text_cleaner import TextCleaner
+from text_cleaner import TextCleaner
 from database_interaction import add_receipt, retrieve_receipt
 from botocore.exceptions import ClientError
 from flask import Flask, request, redirect, jsonify
