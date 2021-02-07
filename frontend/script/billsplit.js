@@ -1,17 +1,3 @@
-//#region datainput
-const receiptName = "KFC"
-
-const bill = [
-    { name: "Pepsi", quantity: 1, price: 1.90 },
-    { name: "Hamburger", quantity: 2, price: 7.90 },
-    { name: "Fries", quantity: 1, price: 4.90 },
-    { name: "Beer", quantity: 3, price: 2.90 },
-    { name: "Apple", quantity: 2, price: 1.80 },
-    { name: "Coke", quantity: 1, price: 8.90 },    
-]
-//#endregion
-
-//#region class declaration
 class BillItem {
     constructor(name, quantity, price) {
         this.name = name
@@ -33,7 +19,7 @@ class BillItem {
             itemBox.classList.add("itembox")
             itemBox.classList.add("half-round-box")
             itemBox.classList.add("reversed-half-round-box")
-            
+
             itemBox.setAttribute("id", id)
             if (draggable) {
                 itemBox.setAttribute("draggable", "true")
@@ -47,17 +33,17 @@ class BillItem {
 
         {
             const itemNameBox = document.createElement("div")
-            itemNameBox.setAttribute("class", "itemName-box")
+            itemNameBox.classList.add("itemName-box")
             itemNameBox.innerHTML = this.name
             itemBox.appendChild(itemNameBox)
 
             const itemCalcBox = document.createElement("div")
-            itemCalcBox.setAttribute("class", "itemCalc-box")
+            itemCalcBox.classList.add("itemCalc-box")
             itemCalcBox.innerHTML = `${this.quantity} x £${(this.price).toFixed(2)}`
             itemBox.appendChild(itemCalcBox)
 
             const itemTotalBox = document.createElement("div")
-            itemTotalBox.setAttribute("class", "itemTotal-box")
+            itemTotalBox.classList.add("itemTotal-box")
             itemTotalBox.innerHTML = `£${(this.quantity * this.price).toFixed(2)}`
             itemBox.appendChild(itemTotalBox)
         }
@@ -65,23 +51,60 @@ class BillItem {
         return itemBox
     }
 }
+
+//#region datainput
+const receiptName = "KFC"
+const bill = [{
+        name: "Pepsi",
+        quantity: 1,
+        price: 1.90
+    },
+    {
+        name: "Hamburger",
+        quantity: 2,
+        price: 7.90
+    },
+    {
+        name: "Fries",
+        quantity: 1,
+        price: 4.90
+    },
+    {
+        name: "Beer",
+        quantity: 3,
+        price: 2.90
+    },
+    {
+        name: "Apple",
+        quantity: 2,
+        price: 1.80
+    },
+    {
+        name: "Coke",
+        quantity: 1,
+        price: 8.90
+    },
+]
 //#endregion
 
 const serializedBill = {}
-{
+const memberBills = {}
+const openBill = {}
+
+function init() {
     for (let i = 0; i < bill.length; i++) {
         const item = bill[i]
         serializedBill[i] = Object.freeze(new BillItem(item.name, item.quantity, item.price))
     }
+    Object.freeze(serializedBill)
+
+    Object.keys(serializedBill).forEach(itemId => {
+        openBill[itemId] = serializedBill[itemId].getCopy()
+    })
+    handleSelectChange()
 }
-Object.freeze(serializedBill)
 
-const openBill = {}
-Object.keys(serializedBill).forEach(itemId => {
-    openBill[itemId] = serializedBill[itemId].getCopy()
-})
 
-const memberBills = {}
 //#endregion
 
 //#region javascript logic
@@ -165,7 +188,7 @@ function updateBillingLists() {
             {
                 let totalPrice = 0
                 Object.keys(member.list).forEach(itemId => {
-                    totalPrice += member.list[itemId].price * member.list[itemId].quantity 
+                    totalPrice += member.list[itemId].price * member.list[itemId].quantity
                 })
                 const billingBoxTotal = document.createElement("div")
                 billingBoxTotal.classList.add("right")
@@ -277,7 +300,7 @@ function onDrop(event) {
         const member = memberBills[memberId]
 
         const billItem = openBill[itemId]
-        billItem.amount--
+        billItem.quantity--
         billItem.needsUpdate = true
 
         console.log(itemId, member, member, billItem)
@@ -397,3 +420,5 @@ function onSubmit() {
     //     }
     // })
 }
+
+init()
