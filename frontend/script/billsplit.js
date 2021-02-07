@@ -103,8 +103,6 @@ function init() {
     })
     handleSelectChange()
 }
-
-
 //#endregion
 
 //#region javascript logic
@@ -125,7 +123,6 @@ function updateBillingLists() {
         const parentNode = document.getElementById("party-members")
         Object.keys(memberBills).forEach(memberName => {
             const member = memberBills[memberName]
-            console.log(member)
             if (!member.init) {
                 member.init = true
                 const memberBox = document.createElement("div")
@@ -230,7 +227,6 @@ let supportedNames = ["Dog", "Cat", "Bird", "Fish", "Monkey", "Eagle", "Turtle",
 
 function getRandomAnimal() {
     const animal = supportedNames.pop()
-    console.log(animal)
     return animal
 }
 
@@ -257,7 +253,6 @@ function handleSelectChange() {
             list: {}
         }
     }
-    console.log(memberBills)
     updateBillingLists()
 }
 //#endregion
@@ -268,16 +263,10 @@ let entered = undefined
 let dragging = false
 
 function onDragStart(event) {
-
     dragging = true
-
     event.dataTransfer.setData('text/plain', event.currentTarget.id)
     draggedId = event.currentTarget.id
-
-
     document.getElementById(event.currentTarget.id).classList.add("dragging")
-
-    console.log("start", draggedId)
 }
 
 function onDragEnd(event) {
@@ -286,7 +275,6 @@ function onDragEnd(event) {
     if (element)
         element.classList.remove("dragging")
 
-    console.log("end", draggedId)
     event.preventDefault()
 }
 
@@ -301,8 +289,6 @@ function onDrop(event) {
         billItem.quantity--
         billItem.needsUpdate = true
 
-        console.log(itemId, member, member, billItem)
-
         if (member.list[itemId]) {
             member.list[itemId].needsUpdate = true
             member.list[itemId].quantity++
@@ -312,23 +298,13 @@ function onDrop(event) {
             copiedBillItem.quantity++
             member.list[itemId] = copiedBillItem
         }
-
         updateBillingLists()
-
-        console.log("drop", event.currentTarget.id)
-
-        const id = draggedId
-        console.log("drop", id)
         event.preventDefault()
     }
 }
 
 function onMouseUp(event) {
-    console.log(event.currentTarget.id)
     const [_, memberId, itemId] = event.currentTarget.id.split("-")
-
-    console.log(_, memberId, itemId)
-
     const member = memberBills[memberId]
     const billItem = openBill[itemId]
     const memberBillItem = member.list[itemId]
