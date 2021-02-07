@@ -260,8 +260,6 @@ function handleSelectChange() {
     console.log(memberBills)
     updateBillingLists()
 }
-
-handleSelectChange()
 //#endregion
 
 //#region dragevents
