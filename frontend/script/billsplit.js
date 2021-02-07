@@ -1,19 +1,21 @@
 //#region datainput
+const receiptName = "KFC"
+
 const bill = [
-    { name: "Pepsi", amount: 1, price: 1.90 },
-    { name: "Hamburger", amount: 2, price: 7.90 },
-    { name: "Fries", amount: 1, price: 4.90 },
-    { name: "Beer", amount: 3, price: 2.90 },
-    { name: "Apple", amount: 2, price: 1.80 },
-    { name: "Coke", amount: 1, price: 8.90 },    
+    { name: "Pepsi", quantity: 1, price: 1.90 },
+    { name: "Hamburger", quantity: 2, price: 7.90 },
+    { name: "Fries", quantity: 1, price: 4.90 },
+    { name: "Beer", quantity: 3, price: 2.90 },
+    { name: "Apple", quantity: 2, price: 1.80 },
+    { name: "Coke", quantity: 1, price: 8.90 },    
 ]
 //#endregion
 
 //#region class declaration
 class BillItem {
-    constructor(name, amount, price) {
+    constructor(name, quantity, price) {
         this.name = name
-        this.amount = amount
+        this.quantity = quantity
         this.price = price
         this.needsUpdate = true
     }
@@ -22,7 +24,7 @@ class BillItem {
         if (empty)
             return new BillItem(this.name, 0, this.price)
         else
-            return new BillItem(this.name, this.amount, this.price)
+            return new BillItem(this.name, this.quantity, this.price)
     }
 
     getHTML(id, draggable = false) {
@@ -51,12 +53,12 @@ class BillItem {
 
             const itemCalcBox = document.createElement("div")
             itemCalcBox.setAttribute("class", "itemCalc-box")
-            itemCalcBox.innerHTML = `${this.amount} x £${(this.price).toFixed(2)}`
+            itemCalcBox.innerHTML = `${this.quantity} x £${(this.price).toFixed(2)}`
             itemBox.appendChild(itemCalcBox)
 
             const itemTotalBox = document.createElement("div")
             itemTotalBox.setAttribute("class", "itemTotal-box")
-            itemTotalBox.innerHTML = `£${(this.amount * this.price).toFixed(2)}`
+            itemTotalBox.innerHTML = `£${(this.quantity * this.price).toFixed(2)}`
             itemBox.appendChild(itemTotalBox)
         }
 
@@ -69,7 +71,7 @@ const serializedBill = {}
 {
     for (let i = 0; i < bill.length; i++) {
         const item = bill[i]
-        serializedBill[i] = Object.freeze(new BillItem(item.name, item.amount, item.price))
+        serializedBill[i] = Object.freeze(new BillItem(item.name, item.quantity, item.price))
     }
 }
 Object.freeze(serializedBill)
@@ -90,7 +92,7 @@ function updateBillingLists() {
 
         Object.keys(openBill).forEach(itemId => {
             const item = openBill[itemId]
-            if (item.needsUpdate && item.amount > 0) {
+            if (item.needsUpdate && item.quantity > 0) {
                 parentNode.appendChild(item.getHTML(`op-${itemId}`, true))
             }
         })
@@ -125,7 +127,7 @@ function updateBillingLists() {
             Object.keys(member.list).forEach(billItemId => {
                 const billItem = member.list[billItemId]
                 if (billItem.needsUpdate) {
-                    if (billItem.amount > 0) {
+                    if (billItem.quantity > 0) {
                         const node = document.getElementById(`mb-${memberName}-${billItemId}`)
                         if (node) {
                             node.replaceWith(billItem.getHTML(`mb-${memberName}-${billItemId}`))
@@ -163,7 +165,7 @@ function updateBillingLists() {
             {
                 let totalPrice = 0
                 Object.keys(member.list).forEach(itemId => {
-                    totalPrice += member.list[itemId].price * member.list[itemId].amount
+                    totalPrice += member.list[itemId].price * member.list[itemId].quantity 
                 })
                 const billingBoxTotal = document.createElement("div")
                 billingBoxTotal.classList.add("right")
@@ -188,7 +190,7 @@ function updateBillingLists() {
         {
             let totalPrice = 0
             Object.keys(openBill).forEach(itemId => {
-                totalPrice += openBill[itemId].price * openBill[itemId].amount
+                totalPrice += openBill[itemId].price * openBill[itemId].quantity
             })
             const billingBoxTotal = document.createElement("div")
             billingBoxTotal.classList.add("right")
@@ -282,11 +284,11 @@ function onDrop(event) {
 
         if (member.list[itemId]) {
             member.list[itemId].needsUpdate = true
-            member.list[itemId].amount++
+            member.list[itemId].quantity++
 
         } else {
             const copiedBillItem = billItem.getCopy(true)
-            copiedBillItem.amount++
+            copiedBillItem.quantity++
             member.list[itemId] = copiedBillItem
         }
 
@@ -310,10 +312,10 @@ function onMouseUp(event) {
     const billItem = openBill[itemId]
     const memberBillItem = member.list[itemId]
 
-    billItem.amount++
+    billItem.quantity++
     billItem.needsUpdate = true
 
-    memberBillItem.amount--
+    memberBillItem.quantity--
     billItem.needsUpdate = true
 
     updateBillingLists()
@@ -327,14 +329,58 @@ function onKeydown(event) {
 
         const previousName = inputNode.id.replace("input-", "")
 
-        document.getElementById(`mb-${previousName}`).remove()
+        if (memberBills[changedName] !== undefined) {
+            inputNode.value = previousName
+            window.alert("Names have to unique!")
+        } else {
+            document.getElementById(`mb-${previousName}`).remove()
 
-        memberBills[changedName] = memberBills[previousName]
-        memberBills[changedName].init = false
-        
+            memberBills[changedName] = memberBills[previousName]
+            memberBills[changedName].init = false
 
-        delete memberBills[previousName]
+            delete memberBills[previousName]
 
-        updateBillingLists()
+            updateBillingLists()
+        }
     }
+}
+
+function roundTwo(number) {
+    return Math.round(number * 100) / 100
+}
+
+function onSubmit() {
+    let receiptTotal = 0
+    for (const billItem of bill) {
+        receiptTotal += billItem.price * billItem.quantity
+    }
+    const outputSplits = []
+    Object.keys(memberBills).forEach(memberId => {
+        const member = memberBills[memberId]
+        let memberTotal = 0
+        const memberItems = []
+        Object.keys(member.list).forEach(itemId => {
+            const item = member.list[itemId]
+            memberTotal += item.price * item.quantity
+            memberItems.push({
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity
+            })
+        })
+        outputSplits.push({
+            name: memberId,
+            total: roundTwo(memberTotal),
+            items: memberItems
+        })
+    })
+    const output = {
+        receipt: {
+            name: receiptName,
+            total: roundTwo(receiptTotal),
+            items: bill
+        },
+        splits: outputSplits
+    }
+    console.log(JSON.stringify(output, null, 4))
 }
