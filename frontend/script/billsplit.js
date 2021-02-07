@@ -1,15 +1,24 @@
 //#region datainput
-const receiptName = "KFC"
+// const receiptName = "KFC"
+//
+// const bill = [
+//     { name: "Pepsi", quantity: 1, price: 1.90 },
+//     { name: "Hamburger", quantity: 2, price: 7.90 },
+//     { name: "Fries", quantity: 1, price: 4.90 },
+//     { name: "Beer", quantity: 3, price: 2.90 },
+//     { name: "Apple", quantity: 2, price: 1.80 },
+//     { name: "Coke", quantity: 1, price: 8.90 },
+// ]
 
-const bill = [
-    { name: "Pepsi", quantity: 1, price: 1.90 },
-    { name: "Hamburger", quantity: 2, price: 7.90 },
-    { name: "Fries", quantity: 1, price: 4.90 },
-    { name: "Beer", quantity: 3, price: 2.90 },
-    { name: "Apple", quantity: 2, price: 1.80 },
-    { name: "Coke", quantity: 1, price: 8.90 },    
-]
+let receiptName = "";
+let bill = [];
 //#endregion
+
+function getData(){
+    bill = localStorage.getItem('data')
+    genSerialBill()
+    updateBillingLists()
+}
 
 //#region class declaration
 class BillItem {
@@ -67,7 +76,8 @@ class BillItem {
 }
 //#endregion
 
-const serializedBill = {}
+let serializedBill = {}
+function genSerialBill()
 {
     for (let i = 0; i < bill.length; i++) {
         const item = bill[i]

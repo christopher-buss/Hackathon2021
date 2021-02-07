@@ -20,7 +20,7 @@ class TextCleaner:
         text = text.replace("O", "0")
         return self.text_is_number(text)
 
-    def concatenate_items(self):
+    def concatenate_items(self) -> dict:
         """Add item name, price, and quantity of items to a dictionary"""
         test = []
         for text in self.receipt_text:
@@ -31,14 +31,14 @@ class TextCleaner:
 
             if self.text_is_number(text):
                 if test[-1] in self.dict_to_return:
-                    self.dict_to_return[test[-1]][1] += 1
+                    self.dict_to_return[test[-1]]['quantity'] += 1
                 else:
-                    self.dict_to_return[test[-1]] = [text, 1]
+                    self.dict_to_return[test[-1]] = {'name': text, 'quantity': 1}
                 test = []
 
-        print(self.dict_to_return)
+        return self.dict_to_return
 
 
 if __name__ == '__main__':
     cleaner = TextCleaner(['CHOCOLATE', 'E1.00', 'IBUPROFEN', 'E0.55', 'IBUPROFEN', 'O.55'])
-    cleaner.concatenate_items()
+    print(cleaner.concatenate_items())

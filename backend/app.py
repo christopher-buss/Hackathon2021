@@ -2,6 +2,8 @@ import logging
 import os
 
 import boto3
+
+from backend.text_cleaner import TextCleaner
 from database_interaction import add_receipt, retrieve_receipt
 from botocore.exceptions import ClientError
 from flask import Flask, request, redirect, jsonify
@@ -64,9 +66,14 @@ def client_upload_file():
             # filename = secure_filename()
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
             save_receipt_to_amazon_s3(UPLOAD_FOLDER + '/' + file.filename, file.filename)
-            detect_text(file.filename)
+            detected_text = detect_text(file.filename)
+            print(detected_text)
+            text_cleaner = TextCleaner(detected_text)
+            formatted_text = text_cleaner.concatenate_items()
+            print(formatted_text)
             print("Uploaded file")
-            return 'Success'
+
+            return jsonify(formatted_text)
     return "Failed", 400
 
 
@@ -86,15 +93,14 @@ def save_receipt_to_amazon_s3(path, file_name):
     return True
 
 
-def detect_text(photo) -> int:
+def detect_text(photo) -> list:
     """https://docs.aws.amazon.com/rekognition/latest/dg/text-detecting-text-procedure.html"""
     client = boto3.client('rekognition', region_name='eu-west-2')
     response = client.detect_text(Image={'S3Object': {'Bucket': 'hackaway-v4', 'Name': photo}},
                                   Filters={'WordFilter': {'MinConfidence': 0.9}})
 
     text_detections = response['TextDetections']
-    print([det['DetectedText'] for det in text_detections])  # if det['Confidence'] > 90])
-    return len(text_detections)
+    return [det['DetectedText'] for det in text_detections]
 
 
 if __name__ == '__main__':

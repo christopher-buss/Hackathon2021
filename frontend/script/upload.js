@@ -33,14 +33,12 @@ function showFileName(event) {
 }
 
 function send() {
-    const upload = async() => {
-        const response = await fetch("http://localhost:5000/save_receipt", {
-            method: 'POST',
-            body: formData,
+    fetch("http://localhost:5000/save_receipt", {method: 'POST', body: formData})
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            localStorage.setItem("data", data)
+            window.location.href = './pages/billsplit.html'
         })
-    const data = await response;
-
-    console.log(data)
-    }
-    upload()
+        .catch(console.error)
 }
