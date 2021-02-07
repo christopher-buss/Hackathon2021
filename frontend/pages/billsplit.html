@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../resources/billsplit.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="upper half-round-box">
+            <div class="welcome">
+                <div class="heading">
+                    BillSplitter
+                </div>
+                <div class="description">Drag and Drop the items to a person. Click an item to return to the list. You
+                    can change your names in the summary section.</div>
+            </div>
+            <div class="control">
+                <div class="selection half-round-box">
+                    <label for="party-members-amount">Select the number of party members: </label>
+                    <select onchange="handleSelectChange()" name="members" id="party-members-amount">
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                    </select>
+                </div>
+                <div onClick="onSubmit();" class="submit half-round-box">
+                    Submit
+                </div>
+            </div>
+
+        </div>
+
+        <div class="lower">
+            <div class="billing half-round-box">
+                <div class="scrolling half-round-box">
+                    <div class="billingheading half-round-box">
+                        Open Bill
+                    </div>
+                    <div id="items" class="half-round-box"></div>
+                </div>
+                <div style="height: 30px;"></div>
+                <div class="half-round-box">
+                    <div class="billingheading half-round-box">
+                        Summary
+                    </div>
+                    <div id="summary" class="half-round-box"></div>
+                </div>
+            </div>
+            <div class="scrolling shares half-round-box" id="party-members">
+
+            </div>
+        </div>
+    </div>
+    <script src="../script/billsplit.js"></script>
+</body>
+
+</html>
